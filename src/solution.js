@@ -1,10 +1,6 @@
 // Please implement your solution in this file
 
 const filter = (data, path, filterFn) => {
-  if (!data.length) {
-    throw new Error(`Empty array to filter`);
-  }
-
   return data.filter(obj => {
     const propValue = extractPropValue(obj, path);
     return filterFn(propValue);
@@ -12,10 +8,6 @@ const filter = (data, path, filterFn) => {
 }
 
 const immutableSort = (data, path) => {
-  if (!data.length) {
-    throw new Error(`Empty array to sort`);
-  }
-
   return [...data].sort((a, b) => {
     const aValue = extractPropValue(a, path);
     const bValue = extractPropValue(b, path);
@@ -30,10 +22,6 @@ const immutableSort = (data, path) => {
 }
 
 const map = (data) => {
-  if (!data.length) {
-    throw new Error(`Empty array to map`);
-  }
-
   return data.map(({ flight_number, mission_name, rocket }) => {
     const payloads_count = extractPropValue(rocket, 'second_stage:payloads').length;
     return {
@@ -56,8 +44,7 @@ const extractPropValue = (obj, path) => {
 function prepareData(data, year = 2018, customer = 'NASA') {
   data = filter(data, 'launch_year', (launchYear) => launchYear === String(year));
   data = filter(data, 'rocket:second_stage:payloads', (payloads) => {
-    const re = new RegExp(`^${customer}.*$`, '');
-    return payloads.some(({ customers }) => customers.some(c => re.test(c)));
+    return payloads.some(({ customers }) => customers.some(c => c.indexOf(customer) !== -1));
   });
   data = immutableSort(data, 'flight_number', false);
   data = immutableSort(data, 'rocket:second_stage:payloads', false);

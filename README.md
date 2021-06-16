@@ -77,3 +77,18 @@ Your solution is expected to render the following:
 
 [spacex-api]: https://docs.spacexdata.com/?version=latest#fce450d6-e064-499a-b88d-34cc22991bcc
 [github-collaborators]: https://help.github.com/en/articles/inviting-collaborators-to-a-personal-repository
+
+
+## Code review comments:
+
+Here is the list of review comments that I received from someone:
+
+* a lot of code wrapping around: filter, map, sort.. just to use custom extractPropValue
+* an error is thrown in case array is empty (!)
+* the code is more error prone, due to a lot of more custom code wrapping
+* even after all of these modifications the performance at the end is poor:
+* double filtering
+* regex was used for filtering (which is the slowest)
+* double sorting
+
+With only two of them I can agree and that's why I fixed these points: throw errors and regex usage. Other ones is a part of implemented solution, and stay as before.
